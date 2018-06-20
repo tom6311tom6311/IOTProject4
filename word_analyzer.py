@@ -56,7 +56,7 @@ class WordAnalyzer:
     word_ids = closest_nodes(self.id2embed[self.word2id[word]], self.id2embed, num)
     return [self.id2word[i] for i in word_ids]
 
-  def find_similar_sentence(self, sentence, random_choice=True, use_jieba_seg=True):
+  def find_similar_sentence(self, sentence, random_choice=True, use_jieba_seg=True, rest_sentence=''):
     if use_jieba_seg:
       j_sentence = list(jieba.posseg.cut(sentence))
       if len(sentence) == 1:
@@ -91,17 +91,36 @@ class WordAnalyzer:
         sim_sentence.extend(self.find_similar_sentence(j_w.word, random_choice))
       return sim_sentence
     else:
-      pass
-      # if sentence in self.word2id:
-      #   closest_words = self.find_closest_words(sentence)
-      #   closest_words = [c_w for c_w in closest_words if len(c_w) == len(sentence)]
+      if sentence == '':
+        return []
+      if sentence in self.word2id:
+        print('a')
+        closest_words = self.find_closest_words(sentence)
+        closest_words = [c_w for c_w in closest_words if len(c_w) == len(sentence) and c_w != sentence]
+        if len(closest_words) != 0:
+          print('c')
+          sentence_part = [random.choice(closest_words)] if random_choice else [closest_words[0]]
+          return sentence_part + self.find_similar_sentence(rest_sentence, random_choice, use_jieba_seg, '')
+        else:
+          print('d')
+          if len(sentence) == 1:
+            return ['ㄜ'] + self.find_similar_sentence(rest_sentence, random_choice, use_jieba_seg, '')
+          else:
+            return self.find_similar_sentence(sentence[:-1], random_choice, use_jieba_seg, sentence[-1] + rest_sentence)
+      else:
+        print('b')
+        if len(sentence) == 1:
+          return ['ㄜ'] + self.find_similar_sentence(rest_sentence, random_choice, use_jieba_seg, '')
+        else:
+          return self.find_similar_sentence(sentence[:-1], random_choice, use_jieba_seg, sentence[-1] + rest_sentence)
+
 
 def main():
   jieba.set_dictionary('data/dict.txt.big')
   word_analyzer = WordAnalyzer()
   while True:
     sentence = input("請输入句子：")
-    similar_seg_sentence = word_analyzer.find_similar_sentence(sentence, random_choice=False)
+    similar_seg_sentence = word_analyzer.find_similar_sentence(sentence, random_choice=False, use_jieba_seg=False)
     print('照樣造句：', ' '.join(similar_seg_sentence))
 
 if __name__ == '__main__':
