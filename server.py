@@ -24,6 +24,8 @@ class S(BaseHTTPRequestHandler):
     resp_sentence = ' '.join(resp_sentence)
     print('Response: ', resp_sentence)
     self.send_response(200)
+    self.send_header('Content-type', 'text/html')
+    self.end_headers()
     self.wfile.write(resp_sentence.encode("utf-8"))
         
 def run(server_class=HTTPServer, handler_class=S, port=8001):

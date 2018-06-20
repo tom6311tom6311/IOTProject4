@@ -32,7 +32,7 @@ def main():
       print('你說："', text, '"')
       print(URL + quote(text))
       resp = requests.get(URL + quote(text))
-      print('我說："', resp.content, '"')
+      print('我說："', resp.content.decode('utf-8'), '"')
       if '開燈' in text:
         led.set_state(aiy.voicehat.LED.ON)
       elif '關燈' in text:
