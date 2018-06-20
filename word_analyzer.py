@@ -94,21 +94,17 @@ class WordAnalyzer:
       if sentence == '':
         return []
       if sentence in self.word2id:
-        print('a')
         closest_words = self.find_closest_words(sentence)
         closest_words = [c_w for c_w in closest_words if len(c_w) == len(sentence) and c_w != sentence]
         if len(closest_words) != 0:
-          print('c')
           sentence_part = [random.choice(closest_words)] if random_choice else [closest_words[0]]
           return sentence_part + self.find_similar_sentence(rest_sentence, random_choice, use_jieba_seg, '')
         else:
-          print('d')
           if len(sentence) == 1:
             return ['ㄜ'] + self.find_similar_sentence(rest_sentence, random_choice, use_jieba_seg, '')
           else:
             return self.find_similar_sentence(sentence[:-1], random_choice, use_jieba_seg, sentence[-1] + rest_sentence)
       else:
-        print('b')
         if len(sentence) == 1:
           return ['ㄜ'] + self.find_similar_sentence(rest_sentence, random_choice, use_jieba_seg, '')
         else:

@@ -22,6 +22,7 @@ class S(BaseHTTPRequestHandler):
     print('Query: ', sentence)
     resp_sentence = word_analyzer.find_similar_sentence(sentence, random_choice=False, use_jieba_seg=False)
     resp_sentence = ' '.join(resp_sentence)
+    print('Response: ', resp_sentence)
     self.send_response(200)
     self.wfile.write(resp_sentence.encode("utf-8"))
         
