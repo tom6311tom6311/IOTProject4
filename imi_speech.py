@@ -5,7 +5,10 @@ import aiy.audio
 import aiy.cloudspeech
 import aiy.voicehat
 import aiy.i18n
-import jieba
+import requests
+from urllib.parse import quote
+
+URL = 'http://140.112.18.214:8001/'
 
 def main():
   aiy.i18n.set_language_code('zh-Hant')
@@ -27,9 +30,9 @@ def main():
       print('抱歉，我沒聽到你說什麼')
     else:
       print('你說："', text, '"')
-      segmented = jieba.cut(text)
-      print('切割如下：')
-      print(' '.join(segmented))
+      print(URL + quote(text))
+      resp = requests.get(URL + quote(text))
+      print('我說："', resp.content, '"')
       if '開燈' in text:
         led.set_state(aiy.voicehat.LED.ON)
       elif '關燈' in text:
