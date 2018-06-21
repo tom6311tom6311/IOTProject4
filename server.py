@@ -19,10 +19,10 @@ from urllib.parse import unquote
 class S(BaseHTTPRequestHandler):
   def do_GET(self):
     sentence = unquote(self.path[1:])
-    print('Query: ', sentence)
+    print('Query: ', sentence.encode('utf-8'))
     resp_sentence = word_analyzer.find_similar_sentence(sentence, random_choice=False, use_jieba_seg=False)
     resp_sentence = ' '.join(resp_sentence)
-    print('Response: ', resp_sentence)
+    print('Response: ', resp_sentence.encode('utf-8'))
     self.send_response(200)
     self.send_header('Content-type', 'text/html')
     self.end_headers()

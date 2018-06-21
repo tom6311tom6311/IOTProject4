@@ -28,7 +28,7 @@ class WordAnalyzer:
   def load_word_embed(self, path='data/zh.tsv'):
     print('loading...')
     lines = []
-    with open(path, 'r') as f:
+    with open(path, 'r', encoding='utf-8') as f:
       lines = f.readlines()
       f.close()
     word2id = {}
