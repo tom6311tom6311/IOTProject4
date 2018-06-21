@@ -4,6 +4,7 @@
 import aiy.audio
 import aiy.cloudspeech
 import aiy.voicehat
+import subprocess
 import aiy.i18n
 import requests
 from urllib.parse import quote
@@ -32,7 +33,10 @@ def main():
       print('你說："', text, '"')
       print(URL + quote(text))
       resp = requests.get(URL + quote(text))
-      print('我說："', resp.content.decode('utf-8'), '"')
+      resp_text=resp.content.decode('utf-8')
+      cmd='espeak -v '+'zh+f3 '+ resp_text.replace(' ','')
+      subprocess.call(cmd,shell=True)
+      print('我說："', resp_text, '"')
       if '開燈' in text:
         led.set_state(aiy.voicehat.LED.ON)
       elif '關燈' in text:
