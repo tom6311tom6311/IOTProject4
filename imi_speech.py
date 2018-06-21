@@ -23,20 +23,19 @@ def main():
   aiy.audio.get_recorder().start()
 
   while True:
-    print('請按鈕並說話')
+    print('請按鈕並說話'.encode('utf-8'))
     button.wait_for_press()
-    print('我正在聽...')
+    print('我正在聽...'.encode('utf-8'))
     text = recognizer.recognize()
     if not text:
-      print('抱歉，我沒聽到你說什麼')
+      print('抱歉，我沒聽到你說什麼'.encode('utf-8'))
     else:
-      print('你說："', text, '"')
-      print(URL + quote(text))
+      print('你說："'.encode('utf-8'), text.encode('utf-8'), '"')
       resp = requests.get(URL + quote(text))
       resp_text=resp.content.decode('utf-8')
       cmd='espeak -v '+'zh+f3 '+ resp_text.replace(' ','')
       subprocess.call(cmd,shell=True)
-      print('我說："', resp_text, '"')
+      print('我說："'.encode('utf-8'), resp_text.encode('utf-8'), '"')
       if '開燈' in text:
         led.set_state(aiy.voicehat.LED.ON)
       elif '關燈' in text:
